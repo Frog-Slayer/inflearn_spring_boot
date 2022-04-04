@@ -4,8 +4,11 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 /**
  * 스프링 빈에 등록하는 2가지 방법 중 하나(컴포넌트 스캔) >> 들어가보면 @Component annotation이 포함되어 있음.
@@ -39,13 +42,20 @@ public class MemberController {
 
 
     //등록 시 post 조회 시 get
-    @PostMapping
+    @PostMapping("/members/new")
     public String create(MemberForm form){
         Member member = new Member();
         member.setName(form.getName());
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/members")
+    public String list(Model model){
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
     }
 
 }
