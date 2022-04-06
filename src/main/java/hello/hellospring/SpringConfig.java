@@ -1,10 +1,14 @@
 package hello.hellospring;
 
+import hello.hellospring.repository.JdbcMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
 
 /**
  *
@@ -20,6 +24,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringConfig {
 
+    private DataSource dataSource;
+
+    @Autowired
+    public SpringConfig(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
+
     @Bean
     public MemberService memberService(){
         return new MemberService(memberRepository());
@@ -27,7 +38,14 @@ public class SpringConfig {
 
     @Bean
     public MemberRepository memberRepository(){
-        return new MemoryMemberRepository();
+        /**
+         * 메모리에 올렸다가 이제는 DB로. 기존의 다른 건 바뀐 거 없음.
+         * 개방-폐쇄 원칙(Open-Close Principle): 확장에는 열려있고, 수정, 변경에는 닫혀있다.
+         * 스프링 DI를 이용하면 기존 코드에 전혀 손대지 않고, 설정만으로 구형 클래스를 변경할 수 있다.
+         * "잘 됨"
+         */
+        //return new MemoryMemberRepository();
+        return new JdbcMemberRepository(dataSource);
     }
 
 }
