@@ -12,7 +12,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceTest {
-
+    /**
+        Q. 그럼 spring을 안 쓰는 이런 테스트(단위 테스트)는 쓸 필요가 없는 거 아닌가요?
+        A. Spring을 쓰는 경우, Test case가 많아지면 너무 느려짐. 보통의 경우 좋은 테스트는 좋은 단위 테스트.
+     */
     MemberService memberService;
     MemoryMemberRepository memberRepository;
 
