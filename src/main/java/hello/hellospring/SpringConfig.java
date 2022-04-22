@@ -24,30 +24,30 @@ import javax.swing.*;
 @Configuration
 public class SpringConfig {
 
-    private EntityManager em;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public SpringConfig(EntityManager em){
-        this.em = em;
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService(){
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
 
-    @Bean
-    public MemberRepository memberRepository(){
-        /**
-         * 메모리에 올렸다가 이제는 DB로. 기존의 다른 건 바뀐 거 없음.
-         * 개방-폐쇄 원칙(Open-Close Principle): 확장에는 열려있고, 수정, 변경에는 닫혀있다.
-         * 스프링 DI를 이용하면 기존 코드에 전혀 손대지 않고, 설정만으로 구형 클래스를 변경할 수 있다.
-         * "잘 됨"
-         */
-        //return new MemoryMemberRepository();
-        //return new JdbcMemberRepository(dataSource);
-        //return new JdbcTemplateMemberRepository(dataSource);
-        return new JpaMemberRepository(em);
-    }
+//    @Bean
+//    public MemberRepository memberRepository(){
+//        /**
+//         * 메모리에 올렸다가 이제는 DB로. 기존의 다른 건 바뀐 거 없음.
+//         * 개방-폐쇄 원칙(Open-Close Principle): 확장에는 열려있고, 수정, 변경에는 닫혀있다.
+//         * 스프링 DI를 이용하면 기존 코드에 전혀 손대지 않고, 설정만으로 구형 클래스를 변경할 수 있다.
+//         * "잘 됨"
+//         */
+//        //return new MemoryMemberRepository();
+//        //return new JdbcMemberRepository(dataSource);
+//        //return new JdbcTemplateMemberRepository(dataSource);
+//        return new JpaMemberRepository(em);
+//    }
 
 }
